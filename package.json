@@ -1,0 +1,26 @@
+{
+  "name": "park-chat-live-infrastructure",
+  "version": "0.9.0",
+  "description": "A dashboard for helping with the administration of ParkChatLIVE, Australia's favourite live theme park talk show.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "terraform:plan": "node aws-infrastructure/docker-host --tf_command plan",
+    "terraform:apply": "node aws-infrastructure/docker-host --tf_command apply",
+    "packer": "node aws-infrastructure/packer-factory",
+    "ssh": "docker run -it -v c:/users/chris/.ssh:/root/.ssh --rm node:6.9.5 bash"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrispyBacon12/park-chat-live-dashboard.git"
+  },
+  "author": "Chris Purssell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CrispyBacon12/park-chat-live-dashboard/issues"
+  },
+  "homepage": "https://github.com/CrispyBacon12/park-chat-live-dashboard#readme",
+  "devDependencies": {
+    "yargs": "^6.6.0"
+  }
+}

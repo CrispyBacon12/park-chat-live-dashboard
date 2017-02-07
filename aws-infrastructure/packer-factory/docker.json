@@ -1,0 +1,49 @@
+{
+  "builders": [
+    {
+      "ami_name": "docker-host_{{uuid}}",
+      "access_key": "{{user `access_key`}}",
+      "secret_key": "{{user `secret_key`}}",
+      "ami_virtualization_type": "hvm",
+      "associate_public_ip_address": "true",
+      "instance_type": "t2.micro",
+      "region": "ap-southeast-2",
+      "source_ami_filter": {
+        "filters": {
+          "name": "*ubuntu-xenial-16.04-amd64-server-*",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": [ "099720109477" ]
+      },
+      "ssh_username": "ubuntu",
+      "subnet_id": "{{user `subnet_id`}}",
+      "tags": {
+        "OS_Version": "Ubuntu",
+        "Release": "16.04",
+        "Packer_Intent": "docker-host"
+      },
+      "type": "amazon-ebs",
+      "security_group_ids": ["{{user `security_group_id`}}"]
+    }
+  ],
+  "post-processors": null,
+  "provisioners": [
+    {
+      "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "inline": [
+        "apt-get update",
+        "apt-get install curl linux-image-extra-$(uname -r) linux-image-extra-virtual",
+        "apt-get install apt-transport-https ca-certificates",
+        "curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -",
+        "add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\"",
+        "apt-get update",
+        "apt-get -y install docker-engine",
+        "mv /tmp/docker.conf /etc/systemd/system/docker.service.d",
+        "systemctl enable docker.service"
+      ],
+      "type": "shell"
+    }
+  ]
+}

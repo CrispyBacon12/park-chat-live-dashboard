@@ -1,2 +1,5 @@
-# park-chat-live-dashboard
-A dashboard for helping with the administration of ParkChatLIVE, Australia's favourite live theme park talk show.
+# Infrastructure Scripts
+A collection of scripts used to manage and provision AWS infrastructure.
+
+* [Create AMI](docs/packer-factory.md)
+* [Create Docker Host](docs/aws-infrastructure.md)
