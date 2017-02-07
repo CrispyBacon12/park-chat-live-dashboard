@@ -1,0 +1,28 @@
+.connector {
+  background-color: rgba(0, 0, 0, 0.4);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 50% 50%;
+  opacity: 0.5;
+}
+
+.active {
+  opacity: 1;
+}
+
+.box {
+  height: 400px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.form {
+  
+}
