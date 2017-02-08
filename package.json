@@ -1,5 +1,5 @@
 {
-  "name": "park-chat-live-infrastructure",
+  "name": "park-chat-live-dashboard",
   "version": "0.9.0",
   "description": "A dashboard for helping with the administration of ParkChatLIVE, Australia's favourite live theme park talk show.",
   "main": "index.js",
