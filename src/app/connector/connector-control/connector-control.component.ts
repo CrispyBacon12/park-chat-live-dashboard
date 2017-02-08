@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Image } from '../connector.module';
 
 @Component({
@@ -11,6 +11,7 @@ export class ConnectorControlComponent implements OnInit {
   editing: boolean;
 
   @Input() image: Image;
+  @Output() onEditingChange = new EventEmitter<boolean>();
 
   constructor() { 
     this.editing = false;
@@ -19,7 +20,17 @@ export class ConnectorControlComponent implements OnInit {
   ngOnInit() {
   }
 
-  toggleEditing() {
-    this.editing = !this.editing;
+  emitEditingChange() {
+    this.onEditingChange.emit(this.editing);
+  }
+
+  startEditing() {
+    this.editing = true;
+    this.emitEditingChange();
+  }
+
+  stopEditing() {
+    this.editing = false;
+    this.emitEditingChange();
   }
 }

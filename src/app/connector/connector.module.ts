@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { ConnectorComponent } from './connector.component';
 import { ConnectorControlComponent } from './connector-control/connector-control.component';
 
+import { FacebookService } from './facebook.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +18,9 @@ import { ConnectorControlComponent } from './connector-control/connector-control
   declarations: [
     ConnectorComponent,
     ConnectorControlComponent
+  ],
+  providers: [
+    FacebookService
   ]
 })
 export class ConnectorModule { }

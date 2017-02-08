@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Image } from './connector.module';
 
+import { FacebookService } from './facebook.service';
+
 @Component({
   selector: 'connector',
   templateUrl: './connector.component.html',
@@ -9,8 +11,14 @@ import { Image } from './connector.module';
 export class ConnectorComponent implements OnInit {
   youtubeLogo: Image;
   facebookLogo: Image;
+  
+  constructor(private facebookService: FacebookService) {
+    this.facebookService = facebookService;
 
-  constructor() {
+    console.log("Hello", this.facebookService);
+  }
+
+  ngOnInit() {
     this.youtubeLogo = {
       alt: 'YouTube',
       src: '/assets/YouTube-logo-full_color.png',
@@ -30,7 +38,14 @@ export class ConnectorComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
+  onFacebookEdit(editing: boolean) {
+    if (editing) {
+      // must now login
+      this.facebookService.getVideoList()
+      .then((what) => {
+        console.log(what);
+      });
+    }
   }
 
 }
