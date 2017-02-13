@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WindowService } from '../window/window.service';
+import { WindowService } from '../../window/window.service';
 
 interface InitParams {
   appId: string;
@@ -22,6 +22,31 @@ interface FacebookSDK {
   AppEvents: {
     logPageView: () => void;
   };
+}
+
+export interface Comment {
+  created_time: string;
+  from: {
+    id: string;
+    name: string;
+  }
+  id: string;
+  message: string;
+}
+
+interface Paging {
+  cursors: {
+    after: string;
+    before: string;
+  }
+}
+
+interface VideoCommentsResponse {
+  comments: {
+    data: Comment[];
+    paging: Paging
+  }
+  id: string;
 }
 
 @Injectable()
@@ -70,5 +95,17 @@ export class FacebookService {
         });
       });
     });
+  }
+
+  getVideoComments(videoId: string) {
+    console.log("getting video comments for video Id", videoId);
+    return this.login()
+    .then((FB) => {
+      return new Promise<VideoCommentsResponse>((resolve, reject) => {
+        FB.api(`/${videoId}?fields=id,comments`, 'get', {}, (response) => {
+          resolve(response);
+        });
+      });
+    })
   }
 }

@@ -7,30 +7,30 @@ import { Image } from '../connector.module';
   styleUrls: ['./connector-control.component.css'],
 })
 export class ConnectorControlComponent implements OnInit {
-  streamKey: string | null;
+  streamKey: string;
   editing: boolean;
 
   @Input() image: Image;
-  @Output() onEditingChange = new EventEmitter<boolean>();
+  @Input() serviceName: string;
+  @Output() onEditingChange = new EventEmitter<string>();
 
   constructor() { 
-    this.editing = false;
+    this.editing = true;
   }
 
   ngOnInit() {
   }
 
-  emitEditingChange() {
-    this.onEditingChange.emit(this.editing);
+  emitStreamKey() {
+    this.onEditingChange.emit(this.streamKey);
   }
 
   startEditing() {
     this.editing = true;
-    this.emitEditingChange();
   }
 
   stopEditing() {
     this.editing = false;
-    this.emitEditingChange();
+    this.emitStreamKey();
   }
 }

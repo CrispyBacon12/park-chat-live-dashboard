@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Image } from './connector.module';
 
-import { FacebookService } from './facebook.service';
+import { FacebookService, Comment } from './facebook/facebook.service';
 
 @Component({
   selector: 'connector',
@@ -11,11 +11,10 @@ import { FacebookService } from './facebook.service';
 export class ConnectorComponent implements OnInit {
   youtubeLogo: Image;
   facebookLogo: Image;
+  comments: Comment[];
   
   constructor(private facebookService: FacebookService) {
     this.facebookService = facebookService;
-
-    console.log("Hello", this.facebookService);
   }
 
   ngOnInit() {
@@ -36,14 +35,21 @@ export class ConnectorComponent implements OnInit {
         width: 144
       }
     };
+
+    this.comments = [];
   }
 
-  onFacebookEdit(editing: boolean) {
-    if (editing) {
+  onFacebookStreamKeyChange(streamKey: string) {
+    if (streamKey) {
+      console.log("Stream key is");
       // must now login
-      this.facebookService.getVideoList()
-      .then((what) => {
-        console.log(what);
+      this.facebookService.getVideoComments(streamKey)
+      .then((response) => {
+        return response.comments.data;
+      })
+      .then((data) => {
+        this.comments = [...this.comments, ...data];
+        console.log(this.comments);
       });
     }
   }
