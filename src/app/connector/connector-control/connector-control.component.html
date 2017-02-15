@@ -1,17 +1,17 @@
 <div>
-  <div class="box connector" (click)="toggleEditing()" [ngClass]="{'active': streamKey}" *ngIf="!editing">
+  <div class="box connector" (click)="startEditing()" [ngClass]="{'active': streamKey}" *ngIf="!editing">
     <img src="{{image.src}}" alt="{{image.alt}}" height="{{image.size.height}}" width="{{image.size.width}}" class="logo">
     Watching stream: {{streamKey}}
   </div>
 
   <div class="box form" *ngIf="editing">
     <div>
-      <label for="streamKey">Enter your YouTube stream key:</label>
+      <label for="streamKey">Enter your {{serviceName}} stream key:</label>
       <input type="text" [(ngModel)]="streamKey">
     </div>
 
     <div>
-      <button type="submit" (click)="toggleEditing()">Done</button>
+      <button type="submit" (click)="stopEditing()">Done</button>
     </div>
   </div>
 </div>

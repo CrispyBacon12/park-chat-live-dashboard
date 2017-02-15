@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
 import { ConnectorModule } from './connector/connector.module';
+
+import { AppComponent } from './app.component';
+
+import { WindowService } from './window/window.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,9 @@ import { ConnectorModule } from './connector/connector.module';
     HttpModule,
     ConnectorModule
   ],
-  providers: [],
+  providers: [
+    {provide: WindowService, useValue: window}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

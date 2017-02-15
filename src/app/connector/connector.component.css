@@ -7,3 +7,7 @@ connector-control {
   float: left;
   margin-right: 4em;
 }
+
+.commentFeed {
+  clear: left;
+}

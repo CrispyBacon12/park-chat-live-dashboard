@@ -1,4 +1,8 @@
 <div class="connectors">
-  <connector-control [image]="youtubeLogo"></connector-control>
-  <connector-control [image]="facebookLogo"></connector-control>
+  <connector-control [image]="youtubeLogo" serviceName="YouTube"></connector-control>
+  <connector-control [image]="facebookLogo" serviceName="Facebook" (onEditingChange)="onFacebookStreamKeyChange($event)"></connector-control>
+</div>
+
+<div class="commentFeed">
+  <comment [comment]="comment" *ngFor="let comment of comments"></comment>
 </div>

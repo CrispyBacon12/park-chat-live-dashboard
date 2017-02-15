@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Image } from '../connector.module';
 
 @Component({
@@ -7,19 +7,30 @@ import { Image } from '../connector.module';
   styleUrls: ['./connector-control.component.css'],
 })
 export class ConnectorControlComponent implements OnInit {
-  streamKey: string | null;
+  streamKey: string;
   editing: boolean;
 
   @Input() image: Image;
+  @Input() serviceName: string;
+  @Output() onEditingChange = new EventEmitter<string>();
 
   constructor() { 
-    this.editing = false;
+    this.editing = true;
   }
 
   ngOnInit() {
   }
 
-  toggleEditing() {
-    this.editing = !this.editing;
+  emitStreamKey() {
+    this.onEditingChange.emit(this.streamKey);
+  }
+
+  startEditing() {
+    this.editing = true;
+  }
+
+  stopEditing() {
+    this.editing = false;
+    this.emitStreamKey();
   }
 }
