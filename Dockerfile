@@ -13,6 +13,6 @@ COPY . /usr/src/app
 
 RUN npm run build
 
-EXPOSE 4200
+EXPOSE 3000
 
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "start" ]
