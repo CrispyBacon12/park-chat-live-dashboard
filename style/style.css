@@ -27,7 +27,7 @@
 }
 
 .presenter-comments-list {
-  font-size: 200%;
+  font-size: 300%;
 }
 
 .video-player {
@@ -37,4 +37,13 @@
 
 [class^="col-"].fixed {
   position: fixed;
+}
+
+.presenter-comments-list .list-group-item {
+  padding: 1rem 1.25rem;
+  line-height: 1.2;
+}
+
+.presenter-comments-list .comment-heading p {
+  margin-bottom: 0;
 }
