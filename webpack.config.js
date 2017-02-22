@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -22,6 +23,11 @@ module.exports = {
       ]
     }]
   },
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: path.join(__dirname, 'style'), to: path.join(__dirname, '/public/style') }
+    ])
+  ],
   resolve: {
     extensions: ['.js', '.jsx']
   },
