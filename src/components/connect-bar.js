@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addComments, updateFacebookVideo } from '../actions';
 
-class ConnectBar extends Component {
+export class ConnectBar extends Component {
   constructor(props) {
     super(props);
 
