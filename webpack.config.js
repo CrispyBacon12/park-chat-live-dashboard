@@ -27,9 +27,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './public',
+    contentBase: './',
     proxy: {
-      '/hello': 'http://localhost:3000',
       '/socket.io': 'http://localhost:3000'
     }
   }
