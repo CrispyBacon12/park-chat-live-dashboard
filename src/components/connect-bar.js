@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addComments } from '../actions';
+import { addComments, updateFacebookVideo } from '../actions';
 
 class ConnectBar extends Component {
   constructor(props) {
@@ -30,6 +30,8 @@ class ConnectBar extends Component {
   onSubmit(event) {
     event.preventDefault();
     
+    this.props.updateFacebookVideo(this.state.videoId);
+    
     const connection = this.facebook.connectToStream(this.state.videoId, (comments) => {
       this.props.addComments(comments);
     });
@@ -37,7 +39,7 @@ class ConnectBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addComments}, dispatch);
+  return bindActionCreators({addComments, updateFacebookVideo}, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(ConnectBar)

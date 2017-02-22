@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import facebookConnector from '../services/facebook';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { approveComment, disapproveComment } from '../actions';
+import { approveComment, disapproveComment, updateFacebookVideo } from '../actions';
 
-import ReadOnlyCommentsListItem from './readonly-comments-list-item';
+import PresenterCommentsList from './presenter-comments-list';
+import VideoPlayer from './video-player';
 
 class PresenterRoot extends Component {
   constructor(props) {
@@ -18,24 +19,35 @@ class PresenterRoot extends Component {
     this.facebook.subscribeDisapproves(comment => {
       this.props.disapproveComment(comment);
     });
+
+    this.facebook.subscribeVideoConnection(videoId => {
+      this.props.updateFacebookVideo(videoId);
+    });
   }
 
   render() {
     return (
-      <ul className="mt-4 mb-4 list-group">
-        { this.props.approvedComments.map(comment => <ReadOnlyCommentsListItem key={comment.id} comment={comment} />) }
-      </ul>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-4 fixed">
+            <VideoPlayer videoId={this.props.videoConnections.facebook} />
+          </div>
+          <div className="col-sm-4"></div>
+          <div className="col-sm-8">
+            <PresenterCommentsList approvedComments={this.props.approvedComments} />
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({approveComment, disapproveComment}, dispatch);
+  return bindActionCreators({approveComment, disapproveComment, updateFacebookVideo}, dispatch);
 }
 
-function mapStateToProps({ approvedComments }) {
-  console.log("approved comments", approvedComments);
-  return { approvedComments };
+function mapStateToProps({ approvedComments, videoConnections }) {
+  return { approvedComments, videoConnections };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PresenterRoot)

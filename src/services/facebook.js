@@ -67,6 +67,10 @@ class Facebook {
   subscribeDisapproves(cb) {
     this.socket.on(events.DISAPPROVE_COMMENT, cb);
   }
+
+  subscribeVideoConnection(cb) {
+    this.socket.on(events.FACEBOOK_VIDEO_CONNECTION, cb);
+  }
 }
 
 export default function() {

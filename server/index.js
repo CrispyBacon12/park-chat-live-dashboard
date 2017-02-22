@@ -15,6 +15,8 @@ app.get('/*', (req,res) => {
 io.on('connection', (socket) => {
   
   socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken}) => {
+    socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId);
+
     facebook.setAccessToken(accessToken);
     
     const commentsEmitter = facebook.fetchComments(videoId);

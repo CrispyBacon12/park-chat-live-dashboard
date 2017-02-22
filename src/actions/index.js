@@ -35,3 +35,11 @@ export function toggleCommentApproval(comment, approvedComments, cb) {
 
   return approveComment(comment);
 }
+
+export const SET_FACEBOOK_VIDEO_ID = 'SET_FACEBOOK_VIDEO_ID';
+export function updateFacebookVideo(videoId, cb) {
+  return {
+    type: SET_FACEBOOK_VIDEO_ID,
+    payload: videoId
+  };
+}

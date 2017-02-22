@@ -18,10 +18,12 @@ class App extends Component {
     const facebook = facebookConnector();
 
     return (
-      <div className="row mt-4">
-        <div className="col-xs-4">
-          <ConnectBar facebook={facebook} />
-          <CommentsList facebook={facebook} />
+      <div className="container">
+        <div className="row mt-4">
+          <div className="col-xs-4">
+            <ConnectBar facebook={facebook} />
+            <CommentsList facebook={facebook} />
+          </div>
         </div>
       </div>
     );
@@ -35,5 +37,5 @@ ReactDOM.render(
       <Route path="/presenter" component={PresenterRoot} />
     </Router>
   </Provider>
-  , document.querySelector('.container'));
+  , document.querySelector('.mount'));
   

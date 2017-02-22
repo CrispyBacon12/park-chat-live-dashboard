@@ -25,3 +25,16 @@
 .list-group-item:hover {
   background-color: #eee;
 }
+
+.presenter-comments-list {
+  font-size: 200%;
+}
+
+.video-player {
+  background-color: #000;
+  color: #fff;
+}
+
+[class^="col-"].fixed {
+  position: fixed;
+}
