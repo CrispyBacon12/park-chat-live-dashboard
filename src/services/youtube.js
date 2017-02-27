@@ -3,6 +3,8 @@ import * as events from '../../server/events';
 import { getUrl, clientId } from './youtube-embed';
 import { STORAGE_KEY } from '../components/google-callback';
 
+export const YOUTUBE_COMMENT_TYPE = 'YOUTUBE';
+
 class YouTube {
   constructor() {
     this.socket = io();
@@ -71,6 +73,18 @@ class YouTube {
   setCommentsHandler(cb) {
     this.commentsHandler = cb;
     this.socket.on(events.SEND_COMMENTS, cb);
+  }
+
+  transformComment(comment) {
+    return {
+      id: comment.id,
+      from: {
+        name: comment.authorDetails.displayName
+      },
+      created_time: comment.snippet.publishedAt,
+      message: comment.snippet.displayMessage,
+      type: YOUTUBE_COMMENT_TYPE
+    };
   }
 }
 

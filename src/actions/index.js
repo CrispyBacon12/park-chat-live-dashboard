@@ -1,17 +1,9 @@
 import facebookConnector from '../services/facebook';
 
-export const ADD_FACEBOOK_COMMENTS = 'ADD_FACEBOOK_COMMENTS';
-export function addFacebookComments(comments) {
+export const ADD_COMMENTS = 'ADD_COMMENTS';
+export function addComments(comments) {
   return {
-    type: ADD_FACEBOOK_COMMENTS,
-    payload: comments
-  };
-}
-
-export const ADD_YOUTUBE_COMMENTS = 'ADD_YOUTUBE_COMMENTS';
-export function addYouTubeComments(comments) {
-  return {
-    type: ADD_YOUTUBE_COMMENTS,
+    type: ADD_COMMENTS,
     payload: comments
   };
 }

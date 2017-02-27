@@ -2,6 +2,8 @@ import io from 'socket.io-client';
 import * as events from '../../server/events';
 import facebook from './facebook-embed';
 
+export const FACEBOOK_COMMENT_TYPE = 'FACEBOOK';
+
 class Facebook {
   constructor() {
     this.socket = io();
@@ -70,6 +72,18 @@ class Facebook {
 
   subscribeVideoConnection(cb) {
     this.socket.on(events.FACEBOOK_VIDEO_CONNECTION, cb);
+  }
+
+  transformComment(comment) {
+    return {
+      id: comment.id,
+      from: {
+        name: comment.from.name
+      },
+      created_time: comment.created_time,
+      message: comment.message,
+      type: FACEBOOK_COMMENT_TYPE
+    };
   }
 }
 
