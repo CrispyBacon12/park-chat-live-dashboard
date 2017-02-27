@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { toggleCommentApproval } from '../actions';
 
 import CommentsListItem from './comments-list-item';
+import YouTubeCommentsListItem from './youtube-comments-list-item';
 
 class CommentsList extends Component {
   constructor(props) {
@@ -14,9 +15,29 @@ class CommentsList extends Component {
   }
 
   render() {
+    const items = this.props.comments.map(comment => {
+      if (comment.kind === 'youtube#liveChatMessage') {
+        return (
+          <YouTubeCommentsListItem 
+            key={comment.id}
+            comment={comment}
+            approvedComments={this.props.approvedComments} 
+            onClick={this.onCommentClick} />
+        );
+      }
+
+      return (
+        <CommentsListItem 
+          key={comment.id} 
+          comment={comment} 
+          approvedComments={this.props.approvedComments} 
+          onClick={this.onCommentClick} />
+      );
+    });
+
     return (
       <ul className="mt-4 mb-4 list-group">
-        { this.props.comments.map(comment => <CommentsListItem key={comment.id} comment={comment} approvedComments={this.props.approvedComments} onClick={this.onCommentClick} />) }
+        { items }
       </ul>
     );
   }

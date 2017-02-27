@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addComments, updateFacebookVideo, updateYoutubeVideo } from '../actions';
+import { addYouTubeComments, addFacebookComments, updateFacebookVideo, updateYoutubeVideo } from '../actions';
 
 export class ConnectBar extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export class ConnectBar extends Component {
     
     const connection = this.facebook.connectToStream(this.state.facebookVideoId, (comments) => {
       console.log("Got a facebook comment", comments);
-      this.props.addComments(comments);
+      this.props.addFacebookComments(comments);
     });
   }
 
@@ -54,14 +54,13 @@ export class ConnectBar extends Component {
     this.props.updateYoutubeVideo(this.state.youtubeVideoId);
 
     const connection = this.youtube.connectToStream(this.state.youtubeVideoId, (comments) => {
-      console.log("Got a youtube comment", comments);
-      this.props.addComments(comments);
+      this.props.addYouTubeComments(comments);
     });
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addComments, updateFacebookVideo, updateYoutubeVideo}, dispatch);
+  return bindActionCreators({addYouTubeComments, addFacebookComments, updateFacebookVideo, updateYoutubeVideo}, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(ConnectBar)

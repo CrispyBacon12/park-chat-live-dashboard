@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
       socket.emit(events.SEND_COMMENTS, res);
     });
 
+    commentsEmitter.on('viewers', (viewers) => {
+      socket.emit(events.UPDATE_VIEWERS, viewers);
+    })
+
     commentsEmitter.on('error', (err) => {
       console.error(err);
     });
