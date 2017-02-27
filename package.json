@@ -43,10 +43,12 @@
     "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "babel-preset-stage-1": "^6.1.18",
     "express": "^4.10.2",
     "fb": "^1.1.1",
     "fbgraph": "^1.4.1",
+    "googleapis": "^17.1.0",
     "lodash": "^3.10.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",

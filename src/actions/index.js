@@ -43,3 +43,11 @@ export function updateFacebookVideo(videoId, cb) {
     payload: videoId
   };
 }
+
+export const SET_YOUTUBE_VIDEO_ID = 'SET_YOUTUBE_VIDEO_ID';
+export function updateYoutubeVideo(videoId, cb) {
+  return {
+    type: SET_YOUTUBE_VIDEO_ID,
+    payload: videoId
+  }
+}

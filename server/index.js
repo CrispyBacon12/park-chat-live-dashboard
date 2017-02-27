@@ -6,6 +6,7 @@ const path = require('path');
 
 const events = require('./events');
 const facebook = require('./facebook');
+const youtube = require('./youtube');
 
 app.use(express.static(path.resolve(__dirname, '../public')));
 app.get('/*', (req,res) => {
@@ -20,6 +21,22 @@ io.on('connection', (socket) => {
     facebook.setAccessToken(accessToken);
     
     const commentsEmitter = facebook.fetchComments(videoId);
+
+    commentsEmitter.on('comments', (res) => {
+      socket.emit(events.SEND_COMMENTS, res);
+    });
+
+    commentsEmitter.on('error', (err) => {
+      console.error(err);
+    });
+  });
+
+  socket.on(events.CONNECT_TO_YOUTUBE, ({videoId, accessToken}) => {
+    socket.broadcast.emit(events.YOUTUBE_VIDEO_CONNECTION, videoId);
+
+    youtube.setAccessToken(accessToken);
+
+    const commentsEmitter = youtube.fetchComments(videoId);
 
     commentsEmitter.on('comments', (res) => {
       socket.emit(events.SEND_COMMENTS, res);

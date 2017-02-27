@@ -1,5 +1,4 @@
 const EventEmitter = require('events');
-const request = require('request');
 const graph = require('fbgraph');
 
 exports.fetchExistingComments = (videoId, limit = 100, maxPages = 2, emitter = null) => {
