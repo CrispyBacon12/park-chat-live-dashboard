@@ -35,6 +35,7 @@ class Facebook {
   connectToStream(videoId, cb) {
     this.login().then(accessToken => {
       this.clearCommentsHandler();
+      console.log("sending socket", events.CONNECT_TO_STREAM);
 
       this.socket.emit(events.CONNECT_TO_STREAM, {videoId, accessToken});
       this.setCommentsHandler(cb);

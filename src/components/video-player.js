@@ -4,8 +4,6 @@ import FacebookPlayer from 'react-facebook-player';
 import uuid from 'uuid';
 
 export default ({ videoId }) => {
-  console.log('rendering with', videoId);
-
   if (!videoId) {
     return videoNotConnected();
   }

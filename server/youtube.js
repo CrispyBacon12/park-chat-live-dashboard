@@ -44,6 +44,12 @@ exports.subscribeLatestComments = (videoId, limit = 50, nextPageToken = null, em
   })
   .then(liveChatMessages => {
     emitter.emit('comments', liveChatMessages.items);
+    
+    // unless emitter says stop, we go again
+    if (emitter._stop) {
+      return;
+    }
+
     return setTimeout(() => {
       this.subscribeLatestComments(videoId, limit, liveChatMessages.nextPageToken, emitter);
     }, liveChatMessages.pollingIntervalMillis);
@@ -59,6 +65,9 @@ exports.setAccessToken = (accessToken) => {
   });
 }
 
+exports.stopEmitter = (emitter) => {
+  emitter._stop = true;
+}
 
 exports.fetchComments = (videoId) => {
   // const emitter = this.fetchExistingComments(videoId);

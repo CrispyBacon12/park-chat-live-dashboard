@@ -75,6 +75,10 @@ class YouTube {
     this.socket.on(events.SEND_COMMENTS, cb);
   }
 
+  subscribeViewers(cb) {
+    this.socket.on(events.UPDATE_VIEWERS, cb);
+  }
+
   transformComment(comment) {
     return {
       id: comment.id,

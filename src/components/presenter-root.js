@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import facebookConnector from '../services/facebook';
+import youtubeConnector from '../services/youtube';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { approveComment, disapproveComment, updateFacebookVideo } from '../actions';
+import { approveComment, disapproveComment, updateFacebookVideo, updateYouTubeViewers } from '../actions';
 
+import ViewerCounts from './viewer-counts';
 import PresenterCommentsList from './presenter-comments-list';
 import VideoPlayer from './video-player';
 
@@ -12,6 +14,8 @@ class PresenterRoot extends Component {
     super(props);
 
     this.facebook = facebookConnector();
+    this.youtube = youtubeConnector();
+
     this.facebook.subscribeApprovals(comment => {
       this.props.approveComment(comment);
     });
@@ -23,6 +27,10 @@ class PresenterRoot extends Component {
     this.facebook.subscribeVideoConnection(videoId => {
       this.props.updateFacebookVideo(videoId);
     });
+
+    this.youtube.subscribeViewers(viewers => {
+      this.props.updateYouTubeViewers(viewers);
+    });
   }
 
   render() {
@@ -31,6 +39,8 @@ class PresenterRoot extends Component {
         <div className="row">
           <div className="col-sm-4 fixed">
             <VideoPlayer videoId={this.props.videoConnections.facebook} />
+
+            <ViewerCounts viewers={this.props.viewers} />
           </div>
           <div className="col-sm-4"></div>
           <div className="col-sm-8">
@@ -43,11 +53,11 @@ class PresenterRoot extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({approveComment, disapproveComment, updateFacebookVideo}, dispatch);
+  return bindActionCreators({approveComment, disapproveComment, updateFacebookVideo, updateYouTubeViewers}, dispatch);
 }
 
-function mapStateToProps({ approvedComments, videoConnections }) {
-  return { approvedComments, videoConnections };
+function mapStateToProps({ approvedComments, videoConnections, viewers }) {
+  return { approvedComments, videoConnections, viewers };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PresenterRoot)

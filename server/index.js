@@ -13,25 +13,30 @@ app.get('/*', (req,res) => {
   res.sendfile(path.join(__dirname, '../index.html'));
 });
 
-io.on('connection', (socket) => {
-  
+io.on('connection', (socket) => {  
+  console.log('user connected');
+
   socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken}) => {
     socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId);
 
     facebook.setAccessToken(accessToken);
     
-    const commentsEmitter = facebook.fetchComments(videoId);
+    const facebookEmitter = facebook.fetchComments(videoId);
 
-    commentsEmitter.on('comments', (res) => {
+    facebookEmitter.on('comments', (res) => {
       socket.emit(events.SEND_COMMENTS, res);
     });
 
-    commentsEmitter.on('viewers', (viewers) => {
-      socket.emit(events.UPDATE_VIEWERS, viewers);
-    })
+    facebookEmitter.on('viewers', (viewers) => {
+      socket.broadcast.emit(events.UPDATE_VIEWERS, viewers);
+    });
 
-    commentsEmitter.on('error', (err) => {
+    facebookEmitter.on('error', (err) => {
       console.error(err);
+    });
+
+    socket.on('disconnect', () => {
+      facebook.stopEmitter(facebookEmitter);
     });
   });
 
@@ -40,19 +45,23 @@ io.on('connection', (socket) => {
 
     youtube.setAccessToken(accessToken);
 
-    const commentsEmitter = youtube.fetchComments(videoId);
+    const youtubeEmitter = youtube.fetchComments(videoId);
 
-    commentsEmitter.on('comments', (res) => {
+    youtubeEmitter.on('comments', (res) => {
       socket.emit(events.SEND_COMMENTS, res);
     });
 
-    commentsEmitter.on('error', (err) => {
+    youtubeEmitter.on('viewers', (viewers) => {
+      socket.broadcast.emit(events.UPDATE_VIEWERS, viewers);
+    });
+
+    youtubeEmitter.on('error', (err) => {
       console.error(err);
     });
-  });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+    socket.on('disconnect', () => {
+      youtube.stopEmitter(youtubeEmitter);
+    });
   });
 
   socket.on(events.APPROVE_COMMENT, (comment) => {
@@ -61,6 +70,10 @@ io.on('connection', (socket) => {
 
   socket.on(events.DISAPPROVE_COMMENT, (comment) => {
     socket.broadcast.emit(events.DISAPPROVE_COMMENT, comment);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
 });
 

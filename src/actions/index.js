@@ -51,3 +51,11 @@ export function updateYoutubeVideo(videoId, cb) {
     payload: videoId
   }
 }
+
+export const SET_YOUTUBE_VIEWERS = 'SET_YOUTUBE_VIEWERS';
+export function setYoutubeViewers(viewers) {
+  return {
+    type: SET_YOUTUBE_VIEWERS,
+    payload: viewers
+  }
+}
