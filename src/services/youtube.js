@@ -12,6 +12,8 @@ class YouTube {
   }
 
   login() {
+    const location = window.location;
+
     return new Promise((resolve, reject) => {
       const url = getUrl({
         clientId,
@@ -19,7 +21,7 @@ class YouTube {
           'profile',
           'https://www.googleapis.com/auth/youtube'
         ].join(' '),
-        redirectUrl: 'http://localhost:8080/gcallback'
+        redirectUrl: `${location.protocol}//${location.host}/gcallback`
       });
 
       const child = window.open(url, '', 'width=800, height=600');
