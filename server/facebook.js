@@ -4,15 +4,12 @@ const graph = require('fbgraph');
 exports.fetchExistingComments = (videoId, limit = 100, maxPages = 2, emitter = null) => {
   emitter = emitter || new EventEmitter();
 
-  graph.get(videoId, { fields: ['id', `comments.limit(${limit}).order(reverse_chronological)`, 'live_views'].join(',') }, (err, res) => {
+  graph.get(videoId, { fields: ['id', `comments.limit(${limit}).order(reverse_chronological)`].join(',') }, (err, res) => {
     if (err) {
       return emitter.emit('error', err);
     }
 
-    console.log("fetched", res);
-
     emitter.emit('comments', res.comments.data);
-    emitter.emit('viewers', res.live_views);
     nextPage(emitter, res.comments.paging, maxPages-1);
   });
 
