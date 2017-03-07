@@ -36,15 +36,19 @@ class PresenterRoot extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-4 fixed">
-            <VideoPlayer videoId={this.props.videoConnections.facebook} />
+        <div className="row d-flex justify-content-around">
+          <div className="col-sm-11">
+            <div className="row">
+              <div className="col-sm-4 fixed">
+                <VideoPlayer videoId={this.props.videoConnections.facebook} />
 
-            <ViewerCounts viewers={this.props.viewers} />
-          </div>
-          <div className="col-sm-4"></div>
-          <div className="col-sm-8">
-            <PresenterCommentsList approvedComments={this.props.approvedComments} />
+                <ViewerCounts viewers={this.props.viewers} />
+              </div>
+              <div className="col-sm-4"></div>
+              <div className="col-sm-8">
+                <PresenterCommentsList approvedComments={this.props.approvedComments} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
