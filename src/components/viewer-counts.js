@@ -8,7 +8,7 @@ export default ({viewers}) => {
         <p className="h3"><span className="badge badge-danger">YouTube: {viewers.youtube}</span></p>
       </div>
       <div>
-        <p className="h3"><span className="badge badge-default">Total: {viewers.youtube}</span></p>
+        <p className="h3"><span className="badge badge-default">Total: {viewers.facebook + viewers.youtube}</span></p>
       </div>
     </div>
   );

@@ -59,3 +59,11 @@ export function setYoutubeViewers(viewers) {
     payload: viewers
   }
 }
+
+export const SET_FACEBOOK_VIEWERS = 'SET_FACEBOOK_VIEWERS';
+export function setFacebookViewers(viewers) {
+  return {
+    type: SET_FACEBOOK_VIEWERS,
+    payload: viewers
+  }
+}

@@ -3,7 +3,7 @@ import facebookConnector from '../services/facebook';
 import youtubeConnector from '../services/youtube';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { approveComment, disapproveComment, updateFacebookVideo, updateYouTubeViewers } from '../actions';
+import { approveComment, disapproveComment, updateFacebookVideo, setFacebookViewers, setYoutubeViewers } from '../actions';
 
 import ViewerCounts from './viewer-counts';
 import PresenterCommentsList from './presenter-comments-list';
@@ -28,8 +28,14 @@ class PresenterRoot extends Component {
       this.props.updateFacebookVideo(videoId);
     });
 
+    this.facebook.subscribeViewers(viewers => {
+      console.log("Got facebook info");
+      this.props.setFacebookViewers(viewers);
+    });
+
     this.youtube.subscribeViewers(viewers => {
-      this.props.updateYouTubeViewers(viewers);
+      console.log("Got youtube info");
+      this.props.setYoutubeViewers(viewers);
     });
   }
 
@@ -57,7 +63,7 @@ class PresenterRoot extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({approveComment, disapproveComment, updateFacebookVideo, updateYouTubeViewers}, dispatch);
+  return bindActionCreators({approveComment, disapproveComment, updateFacebookVideo, setFacebookViewers, setYoutubeViewers}, dispatch);
 }
 
 function mapStateToProps({ approvedComments, videoConnections, viewers }) {

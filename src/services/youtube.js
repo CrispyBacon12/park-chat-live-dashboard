@@ -78,7 +78,7 @@ class YouTube {
   }
 
   subscribeViewers(cb) {
-    this.socket.on(events.UPDATE_VIEWERS, cb);
+    this.socket.on(events.UPDATE_YOUTUBE_VIEWERS, cb);
   }
 
   transformComment(comment) {

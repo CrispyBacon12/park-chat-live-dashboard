@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
     });
 
     facebookEmitter.on('viewers', (viewers) => {
-      socket.broadcast.emit(events.UPDATE_VIEWERS, viewers);
+      socket.broadcast.emit(events.UPDATE_FACEBOOK_VIEWERS, viewers);
     });
 
     facebookEmitter.on('error', (err) => {
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
     });
 
     youtubeEmitter.on('viewers', (viewers) => {
-      socket.broadcast.emit(events.UPDATE_VIEWERS, viewers);
+      socket.broadcast.emit(events.UPDATE_YOUTUBE_VIEWERS, viewers);
     });
 
     youtubeEmitter.on('error', (err) => {
