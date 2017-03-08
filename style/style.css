@@ -47,3 +47,7 @@
 .presenter-comments-list .comment-heading p {
   margin-bottom: 0;
 }
+
+.tv-container {
+  max-width: 95%;
+}

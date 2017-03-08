@@ -41,7 +41,7 @@ class PresenterRoot extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid tv-container">
         <div className="row">
           <div className="col-sm-4 fixed">
             <VideoPlayer videoId={this.props.videoConnections.facebook} />
@@ -49,7 +49,7 @@ class PresenterRoot extends Component {
             <ViewerCounts viewers={this.props.viewers} />
           </div>
           <div className="col-sm-4"></div>
-          <div className="col-sm-6 col-sm-offset-1">
+          <div className="col-sm-7 offset-sm-1">
             <PresenterCommentsList approvedComments={this.props.approvedComments} />
           </div>
         </div>
