@@ -64,7 +64,7 @@ class PresenterRoot extends Component {
             <Clock facebookStartTime={this.props.times.facebook} />
           </div>
           <div className="col-sm-5"></div>
-          <div className="col-sm-6 offset-sm-1">
+          <div className="col-sm-7 comments-column">
             <PresenterCommentsList approvedComments={this.props.approvedComments} />
           </div>
         </div>
