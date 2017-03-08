@@ -67,3 +67,11 @@ export function setFacebookViewers(viewers) {
     payload: viewers
   }
 }
+
+export const SET_FACEBOOK_START_TIME = 'SET_FACEBOOK_START_TIME';
+export function setFacebookStartTime(startTime) {
+  return {
+    type: SET_FACEBOOK_START_TIME,
+    payload: startTime
+  }
+}

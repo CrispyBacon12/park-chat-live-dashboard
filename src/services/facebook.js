@@ -79,6 +79,10 @@ class Facebook {
     this.socket.on(events.UPDATE_FACEBOOK_VIEWERS, cb);
   }
 
+  subscribeStartTime(cb) {
+    this.socket.on(events.FACEBOOK_VIDEO_START_TIME, cb);
+  }
+
   transformComment(comment) {
     return {
       id: comment.id,

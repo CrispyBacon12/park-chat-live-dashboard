@@ -12,13 +12,13 @@ export function ViewersReducer(state = {youtube: 0, facebook: 0}, action) {
 function setFacebookViewers(state, action) {
   return {
     youtube: state.youtube,
-    facebook: action.payload
+    facebook: Number(action.payload)
   };
 }
 
 function setYoutubeViewers(state, action) {
   return {
-    youtube: action.payload,
+    youtube: Number(action.payload),
     facebook: state.facebook
   };
 }

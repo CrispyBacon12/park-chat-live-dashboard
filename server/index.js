@@ -31,6 +31,10 @@ io.on('connection', (socket) => {
       socket.broadcast.emit(events.UPDATE_FACEBOOK_VIEWERS, viewers);
     });
 
+    facebookEmitter.on('startTime', (startTime) => {
+      socket.broadcast.emit(events.FACEBOOK_VIDEO_START_TIME, startTime);
+    });
+
     facebookEmitter.on('error', (err) => {
       console.error(err);
     });

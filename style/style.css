@@ -51,3 +51,20 @@
 .tv-container {
   max-width: 95%;
 }
+
+.viewer-count {
+  border-bottom: 1px solid #eee;
+}
+
+.viewer-total {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.clock {
+  text-align: center;
+  font-size: 400%;
+  font-family: 'Roboto Mono', monospace;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}

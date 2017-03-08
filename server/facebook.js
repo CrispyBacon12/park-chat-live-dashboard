@@ -16,15 +16,31 @@ exports.fetchExistingComments = (videoId, limit = 100, maxPages = 2, emitter = n
       return emitter.emit('error', 'Could not find matching video');
     }
 
-    graph.get(broadcast.id, { fields: [ 'id', 'live_views', `comments.limit(${limit}).order(reverse_chronological)`].join(',') }, (err, res) => {
+    graph.get(broadcast.id, { fields: [ 'id', 'live_views', 'status', 'planned_start_time', 'video{created_time}', `comments.limit(${limit}).order(reverse_chronological)`].join(',') }, (err, res) => {
       if (err) {
         return emitter.emit('error', err);
       }
 
-      emitter.emit('viewers', res.live_views);
+      if (res.live_views) {
+        emitter.emit('viewers', res.live_views);
+      }
+      
+      const isScheduled = res.status === 'SCHEDULED_UNPUBLISHED' && res.planned_start_time
+      if (isScheduled) {
+        emitter.emit('startTime', res.planned_start_time);
+      }
+      
+      if (!isScheduled && res.video && res.video.created_time) {
+        emitter.emit('startTime', res.video.created_time);
+      }
 
-      emitter.emit('comments', res.comments.data);
-      nextPage(emitter, res.comments.paging, maxPages-1);
+      if (res.comments && res.comments.data) {
+        emitter.emit('comments', res.comments.data);
+      }
+
+      if (res.comments && res.comments.paging) {
+        nextPage(emitter, res.comments.paging, maxPages-1);
+      }
     });
   });
 
