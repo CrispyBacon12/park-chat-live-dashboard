@@ -15,7 +15,7 @@ function approveComment(state, action) {
   const stateDifference = state.filter(comment => comment.id !== action.payload.id);
   return [...stateDifference, action.payload]
   .sort((a, b) => {
-    return (a.created_time < b.created_time) ? 1 : (a.created_time > b.created_time) ? -1 : 0;
+    return (a.created_time > b.created_time) ? 1 : (a.created_time < b.created_time) ? -1 : 0;
   });
 }
 
