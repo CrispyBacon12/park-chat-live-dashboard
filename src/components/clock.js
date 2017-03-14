@@ -26,11 +26,10 @@ export default class Clock extends Component {
 
     const differenceMillis = this.state.currentTime.getTime() - this.props.facebookStartTime.getTime();
     const duration = calculateDuration(differenceMillis);
-    const clockClass = "";
 
     return (
       <div className="clock mt-4 pb-4">
-        <p>{duration.negative ? '-' : ''}{duration.hours}:{duration.minutes}</p>
+        <p className={getClockClass(duration)}>{duration.negative ? '-' : ''}{duration.hours}:{duration.minutes}</p>
       </div>
     );
   }
