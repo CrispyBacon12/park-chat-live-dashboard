@@ -29,7 +29,7 @@ export default class Clock extends Component {
 
     return (
       <div className="clock mt-4 pb-4">
-        <p className={getClockClass(duration)}>{duration.negative ? '-' : ''}{duration.hours}:{duration.minutes}</p>
+        <p className={this.getClockClass(duration)}>{duration.negative ? '-' : ''}{duration.hours}:{duration.minutes}</p>
       </div>
     );
   }
