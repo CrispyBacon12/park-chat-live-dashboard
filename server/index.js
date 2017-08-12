@@ -16,12 +16,12 @@ app.get('/*', (req,res) => {
 io.on('connection', (socket) => {  
   console.log('user connected');
 
-  socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken}) => {
-    socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId);
+  socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken, pageId}) => {
+    socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId, pageId);
 
     facebook.setAccessToken(accessToken);
     
-    const facebookEmitter = facebook.fetchComments(videoId);
+    const facebookEmitter = facebook.fetchComments(videoId, pageId);
 
     facebookEmitter.on('comments', (res) => {
       socket.emit(events.SEND_COMMENTS, res);
@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+      console.log('facebook socket disconnected');
       facebook.stopEmitter(facebookEmitter);
     });
   });
@@ -64,6 +65,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+      console.log('youtube socket disconnected');
       youtube.stopEmitter(youtubeEmitter);
     });
   });

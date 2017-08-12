@@ -1,16 +1,21 @@
 const EventEmitter = require('events');
 const graph = require('fbgraph');
+const PAGE_ID = '628490220508711';
 
-exports.fetchExistingComments = (videoId, limit = 100, maxPages = 2, emitter = null) => {
+exports.fetchExistingComments = (videoId, pageId = PAGE_ID, limit = 100, maxPages = 2, emitter = null) => {
   emitter = emitter || new EventEmitter();
-  const PAGE_ID = '628490220508711';
 
-  graph.get(`${PAGE_ID}/video_broadcasts`, { fields: ['id', 'status', 'video'].join(',')}, (err, res) => {
+  console.log('making graph request', `${pageId}/video_broadcasts`, { fields: ['id', 'status', 'video'].join(',') });
+  graph.get(`${pageId}/video_broadcasts`, { fields: ['id', 'status', 'video'].join(',')}, (err, res) => {
     if (err) {
       return emitter.emit('error', err);
     }
 
+    console.log(`searching for videoID ${videoId} amongst these IDs: ${res.data.map(broadcast => broadcast.video.id).join(' ')}`);
+
     const broadcast = res.data.filter(broadcast => broadcast.video.id === videoId).pop();
+
+    console.log('found this broadcast', broadcast);
 
     if (!broadcast) {
       return emitter.emit('error', 'Could not find matching video');
@@ -65,22 +70,23 @@ function nextPage(emitter, paging, numRecursions) {
 }
 
 exports.setAccessToken = (accessToken) => {
+  console.log('access token set to', accessToken);
   graph.setAccessToken(accessToken);
 }
 
-exports.subscribeLatestComments = (videoId, emitter) => {
-  return setInterval(this.fetchExistingComments.bind(this, videoId, 20, 1, emitter), 2000);
+exports.subscribeLatestComments = (videoId, pageId, emitter) => {
+  return setInterval(this.fetchExistingComments.bind(this, videoId, pageId, 20, 1, emitter), 2000);
 }
 
 exports.stopEmitter = (emitter) => {
   emitter._stop();
 }
 
-exports.fetchComments = (videoId) => {
-  console.log('fetching comments', videoId);
-  const emitter = this.fetchExistingComments(videoId);
-  const timerId = this.subscribeLatestComments(videoId, emitter);
-  
+exports.fetchComments = (videoId, pageId) => {
+  console.log('fetching comments', videoId, pageId);
+  const emitter = this.fetchExistingComments(videoId, pageId);
+  const timerId = this.subscribeLatestComments(videoId, pageId, emitter);  
+
   emitter._stop = function() {
     clearInterval(timerId);
   }

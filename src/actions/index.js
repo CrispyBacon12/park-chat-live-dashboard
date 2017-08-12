@@ -44,6 +44,14 @@ export function updateFacebookVideo(videoId, cb) {
   };
 }
 
+export const SET_FACEBOOK_PAGE_ID = 'SET_FACEBOOK_VIDEO_ID';
+export function updateFacebookPage(pageId, cb) {
+  return {
+    type: SET_FACEBOOK_VIDEO_ID,
+    payload: pageId
+  };
+}
+
 export const SET_YOUTUBE_VIDEO_ID = 'SET_YOUTUBE_VIDEO_ID';
 export function updateYoutubeVideo(videoId, cb) {
   return {

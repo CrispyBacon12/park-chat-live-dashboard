@@ -32,12 +32,12 @@ class Facebook {
     });    
   }
 
-  connectToStream(videoId, cb) {
+  connectToStream(videoId, pageId, cb) {
     this.login().then(accessToken => {
       this.clearCommentsHandler();
       console.log("sending socket", events.CONNECT_TO_STREAM);
 
-      this.socket.emit(events.CONNECT_TO_STREAM, {videoId, accessToken});
+      this.socket.emit(events.CONNECT_TO_STREAM, {videoId, accessToken, pageId});
       this.setCommentsHandler(cb);
     });
   }
