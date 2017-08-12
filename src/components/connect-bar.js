@@ -13,6 +13,7 @@ export class ConnectBar extends Component {
 
     this.onFacebookSubmit = this.onFacebookSubmit.bind(this);
     this.onYoutubeSubmit = this.onYoutubeSubmit.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
   }
 
   render() {
@@ -23,6 +24,7 @@ export class ConnectBar extends Component {
             <input className="form-control mr-2" type="text" value={this.state.facebookVideoId} onChange={event => this.setState({facebookVideoId: event.target.value})} />
             <input className="form-control mr-2" type="text" value={this.state.facebookPageId} onChange={event => this.setState({facebookPageId: event.target.value})} />
             <button type="submit" className="btn btn-primary">Connect Facebook!</button>
+            <button type="button" className="btn btn-secondary ml-2" onClick={this.onLogoutClick}>Logout</button>
           </form>
 
           <form className="form-inline col-sm-6" onSubmit={this.onYoutubeSubmit}>
@@ -57,6 +59,10 @@ export class ConnectBar extends Component {
       console.log("Got some yt comments", comments, parsedComments);
       this.props.addComments(parsedComments);
     });
+  }
+
+  onLogoutClick(event) {
+    this.facebook.logout();
   }
 }
 

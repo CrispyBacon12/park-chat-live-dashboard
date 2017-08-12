@@ -9,18 +9,31 @@ class Facebook {
     this.socket = io();
   }
 
+  logout() {
+    return new Promise((resolve, reject) => {
+      facebook.then(fb => {
+        fb.logout(response => {
+          console.log('logged out');
+          return resolve(response);
+        });
+      });
+    })
+  }
+
   login() {
     return new Promise((resolve, reject) => {
       facebook.then(fb => {
         fb.getLoginStatus(response => {
           // already logged in, great!
           if (response.status === 'connected') {
+            console.log('already logged in with access token', response.authResponse.accessToken);
             return resolve(response.authResponse.accessToken);
           }
 
           // not logged in to either facebook or app (or both)
           fb.login(response => {
             if (response.status === 'connected') {
+              console.log('logged in with access token', response.authResponse.accessToken);
               return resolve(response.authResponse.accessToken);
             }
 
