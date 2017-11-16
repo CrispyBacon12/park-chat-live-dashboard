@@ -5,8 +5,8 @@ const PAGE_ID = '628490220508711';
 exports.fetchExistingComments = (videoId, pageId = PAGE_ID, limit = 100, maxPages = 2, emitter = null) => {
   emitter = emitter || new EventEmitter();
 
-  console.log('making graph request', `${pageId}/video_broadcasts`, { fields: ['id', 'status', 'video'].join(',') });
-  graph.get(`${pageId}/video_broadcasts`, { fields: ['id', 'status', 'video'].join(',')}, (err, res) => {
+  console.log('making graph request', `${pageId}/live_videos`, { fields: ['id', 'status', 'video'].join(',') });
+  graph.get(`${pageId}/live_videos`, { fields: ['id', 'status', 'video'].join(',')}, (err, res) => {
     if (err) {
       return emitter.emit('error', err);
     }
