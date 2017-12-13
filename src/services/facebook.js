@@ -50,10 +50,6 @@ class Facebook {
       this.clearCommentsHandler();
       console.log("sending socket", events.CONNECT_TO_STREAM);
 
-      if (window.pageAccessToken) {
-        accessToken = window.pageAccessToken;
-      }
-
       this.socket.emit(events.CONNECT_TO_STREAM, {videoId, accessToken, pageId});
       this.setCommentsHandler(cb);
     });
