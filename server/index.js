@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const EventEmitter = require('events');
 
 const events = require('./events');
 const facebook = require('./facebook');
@@ -15,27 +16,51 @@ app.get('/*', (req,res) => {
 
 io.on('connection', (socket) => {  
   console.log('user connected');
+  const facebookEmitter = new EventEmitter();
+
+  facebookEmitter.on('error', (err) => {
+    socket.emit(events.FACEBOOK_ERROR, err);
+    facebook.stopEmitter(facebookEmitter);
+    console.error(err);
+  });
+
+  socket.on(events.REQUEST_VIDEOS_LIST, ({accessToken, pageId}) => {
+    console.log('request videos list');
+    facebook.setAccessToken(accessToken, pageId)
+    .then(() => {
+      facebook.fetchLiveVideos(pageId, facebookEmitter);
+
+      facebookEmitter.on('videosList', (videos) => {
+        socket.emit(events.SEND_VIDEOS_LIST, videos);
+      });
+    })
+    .catch(err => {
+      socket.broadcast.emit(events.FACEBOOK_ERROR, err);
+      console.error(err);
+    });
+  });
 
   socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken, pageId}) => {
     socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId, pageId);
 
-    facebook.setAccessToken(accessToken);
-    
-    const facebookEmitter = facebook.fetchComments(videoId, pageId);
+    facebook.setAccessToken(accessToken, pageId)
+    .then(() => {
+      facebook.fetchComments(videoId, pageId, facebookEmitter);
 
-    facebookEmitter.on('comments', (res) => {
-      socket.emit(events.SEND_COMMENTS, res);
-    });
-
-    facebookEmitter.on('viewers', (viewers) => {
-      socket.broadcast.emit(events.UPDATE_FACEBOOK_VIEWERS, viewers);
-    });
-
-    facebookEmitter.on('startTime', (startTime) => {
-      socket.broadcast.emit(events.FACEBOOK_VIDEO_START_TIME, startTime);
-    });
-
-    facebookEmitter.on('error', (err) => {
+      facebookEmitter.on('comments', (res) => {
+        socket.emit(events.SEND_COMMENTS, res);
+      });
+  
+      facebookEmitter.on('viewers', (viewers) => {
+        socket.broadcast.emit(events.UPDATE_FACEBOOK_VIEWERS, viewers);
+      });
+  
+      facebookEmitter.on('startTime', (startTime) => {
+        socket.broadcast.emit(events.FACEBOOK_VIDEO_START_TIME, startTime);
+      });
+    })
+    .catch(err => {
+      socket.broadcast.emit(events.FACEBOOK_ERROR, err);
       console.error(err);
     });
 

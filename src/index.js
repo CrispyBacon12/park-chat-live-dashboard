@@ -9,6 +9,7 @@ import ConnectBar from './components/connect-bar';
 import CommentsList from './components/comments-list';
 import PresenterRoot from './components/presenter-root';
 import GoogleCallback from './components/google-callback';
+import AlertBar from './components/alert-bar';
 import { rootReducer } from './reducers';
 import facebookConnector from './services/facebook';
 import youtubeConnector from './services/youtube';
@@ -22,6 +23,9 @@ class App extends Component {
 
     return (
       <div className="container">
+        <div className="row flex-column mt-1">
+          <AlertBar />
+        </div>
         <div className="row mt-4">
           <div>
             <ConnectBar facebook={facebook} youtube={youtube} />

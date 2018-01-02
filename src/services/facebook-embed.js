@@ -11,7 +11,7 @@ export default new Promise((resolve, reject) => {
     FB.init({
       appId: '673351099519084',
       xfbml: true,
-      version: 'v2.8'
+      version: 'v2.11'
     });
     FB.AppEvents.logPageView();
     

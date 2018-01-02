@@ -83,3 +83,19 @@ export function setFacebookStartTime(startTime) {
     payload: startTime
   }
 }
+
+export const SET_ERROR = 'SET_ERROR';
+export function setError(error) {
+  return {
+    type: SET_ERROR,
+    payload: error
+  }
+}
+
+export const SET_LIVE_VIDEOS = 'SET_LIVE_VIDEOS';
+export function setLiveVideos(videos) {
+  return {
+    type: SET_LIVE_VIDEOS,
+    payload: videos
+  }
+}

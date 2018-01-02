@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addComments, updateFacebookVideo, updateYoutubeVideo, updateFacebookPage } from '../actions';
+import { addComments, updateFacebookVideo, updateYoutubeVideo, updateFacebookPage, setLiveVideos } from '../actions';
+import { VideoSelector } from './video-selector';
 
 export class ConnectBar extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class ConnectBar extends Component {
     this.onFacebookSubmit = this.onFacebookSubmit.bind(this);
     this.onYoutubeSubmit = this.onYoutubeSubmit.bind(this);
     this.onLogoutClick = this.onLogoutClick.bind(this);
+    this.selectedVideo = this.selectedVideo.bind(this);
   }
 
   render() {
@@ -21,7 +23,6 @@ export class ConnectBar extends Component {
       <div className="container">
         <div className="row">
           <form className="form-inline col-sm-6" onSubmit={this.onFacebookSubmit}>
-            <input className="form-control mr-2" type="text" value={this.state.facebookVideoId} onChange={event => this.setState({facebookVideoId: event.target.value})} />
             <input className="form-control mr-2" type="text" value={this.state.facebookPageId} onChange={event => this.setState({facebookPageId: event.target.value})} />
             <button type="submit" className="btn btn-primary">Connect Facebook!</button>
             <button type="button" className="btn btn-secondary ml-2" onClick={this.onLogoutClick}>Logout</button>
@@ -32,8 +33,20 @@ export class ConnectBar extends Component {
             <button type="submit" className="btn btn-danger">Connect YouTube!</button>
           </form>
         </div>
+
+        <VideoSelector videos={this.props.videos} selectedVideo={video => this.selectedVideo(video)} />
       </div>
     );
+  }
+
+  selectedVideo(video) {
+    this.props.setLiveVideos([]);
+
+    this.facebook.connectToStream(video.id, this.state.facebookPageId, (comments) => {
+      const parsedComments = comments.map(this.props.facebook.transformComment)
+      console.log('Got some fb comments', comments, parsedComments);
+      this.props.addComments(parsedComments);
+    });
   }
 
   onFacebookSubmit(event) {
@@ -41,11 +54,10 @@ export class ConnectBar extends Component {
     
     this.props.updateFacebookVideo(this.state.facebookVideoId);
     this.props.updateFacebookPage(this.state.facebookPageId);
-    
-    const connection = this.facebook.connectToStream(this.state.facebookVideoId, this.state.facebookPageId, (comments) => {
-      const parsedComments = comments.map(this.props.facebook.transformComment)
-      console.log('Got some fb comments', comments, parsedComments);
-      this.props.addComments(parsedComments);
+
+    const connection = this.facebook.fetchLiveVideos(this.state.facebookPageId, (videos) => {
+      this.props.setLiveVideos(videos.data);
+       
     });
   }
 
@@ -67,7 +79,11 @@ export class ConnectBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addComments, updateFacebookVideo, updateYoutubeVideo, updateFacebookPage}, dispatch);
+  return bindActionCreators({addComments, updateFacebookVideo, updateYoutubeVideo, updateFacebookPage, setLiveVideos}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(ConnectBar)
+function mapStateToProps({ liveVideos }) {
+  return { videos: liveVideos };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectBar)

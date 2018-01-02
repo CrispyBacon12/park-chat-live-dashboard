@@ -55,6 +55,16 @@ class Facebook {
     });
   }
 
+  fetchLiveVideos(pageId, cb) {
+    this.login().then(accessToken => {
+      this.clearLiveVideosHandler();
+      console.log('requesting live videos', events.REQUEST_VIDEOS_LIST);
+
+      this.socket.emit(events.REQUEST_VIDEOS_LIST, {accessToken, pageId});
+      this.setLiveVideosHandler(cb);
+    });
+  }
+
   clearCommentsHandler() {
     if (this.commentsHandler) {
       this.socket.removeListener(events.SEND_COMMENTS, this.commentsHandler);
@@ -64,6 +74,17 @@ class Facebook {
   setCommentsHandler(cb) {
     this.commentsHandler = cb;
     this.socket.on(events.SEND_COMMENTS, cb);
+  }
+
+  clearLiveVideosHandler() {
+    if (this.liveVideosHandler) {
+      this.socket.removeListener(events.SEND_VIDEOS_LIST, this.liveVideosHandler);
+    }
+  }
+
+  setLiveVideosHandler(cb) {
+    this.liveVideosHandler = cb;
+    this.socket.on(events.SEND_VIDEOS_LIST, cb);
   }
 
   broadcastApproveComment(comment) {
@@ -94,6 +115,13 @@ class Facebook {
 
   subscribeStartTime(cb) {
     this.socket.on(events.FACEBOOK_VIDEO_START_TIME, cb);
+  }
+
+  subscribeErrors(cb) {
+    this.socket.on(events.FACEBOOK_ERROR, (err) => {
+      console.log('received a facebook error', err);
+      cb(err);
+    });
   }
 
   transformComment(comment) {
