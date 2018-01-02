@@ -41,8 +41,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on(events.CONNECT_TO_STREAM, ({videoId, accessToken, pageId}) => {
-    socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId, pageId);
-
     facebook.setAccessToken(accessToken, pageId)
     .then(() => {
       facebook.fetchComments(videoId, pageId, facebookEmitter);
@@ -57,6 +55,10 @@ io.on('connection', (socket) => {
   
       facebookEmitter.on('startTime', (startTime) => {
         socket.broadcast.emit(events.FACEBOOK_VIDEO_START_TIME, startTime);
+      });
+
+      facebookEmitter.on('updateVideoId', (videoId) => {
+        socket.broadcast.emit(events.FACEBOOK_VIDEO_CONNECTION, videoId);
       });
     })
     .catch(err => {

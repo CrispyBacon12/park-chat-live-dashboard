@@ -45,6 +45,7 @@ function videoContent(video) {
       return scheduledUnpublishedDescriptor(video);
     case 'VOD':
       return vodDescriptor(video);
+    case 'LIVE':
     case 'SCHEDULED_LIVE':
       return scheduledLive(video);
     default:

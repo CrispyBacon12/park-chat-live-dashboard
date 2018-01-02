@@ -33,6 +33,7 @@ class PresenterRoot extends Component {
     });
 
     this.facebook.subscribeVideoConnection(videoId => {
+      console.log('updating facebook video id', videoId);
       this.props.updateFacebookVideo(videoId);
     });
 

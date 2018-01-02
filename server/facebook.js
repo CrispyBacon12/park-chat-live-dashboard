@@ -37,7 +37,7 @@ exports.fetchExistingComments = (videoId, pageId = PAGE_ID, limit = 100, maxPage
       return emitter.emit('error', err);
     }
 
-      console.log('making graph request', `/${videoId}`, { fields: ['id', 'status', 'video'].join(',') });
+      console.log('making graph request', `/${videoId}`, { fields: ['id', 'live_views', 'status', 'planned_start_time', 'video{created_time}', `comments.limit(${limit}).order(reverse_chronological)`].join(',') });
       graph.get(videoId, { fields: [ 'id', 'live_views', 'status', 'planned_start_time', 'video{created_time}', `comments.limit(${limit}).order(reverse_chronological)`].join(',') }, (err, res) => {
         if (err) {
           return emitter.emit('error', err);
@@ -54,6 +54,10 @@ exports.fetchExistingComments = (videoId, pageId = PAGE_ID, limit = 100, maxPage
         
         if (!isScheduled && res.video && res.video.created_time) {
           emitter.emit('startTime', res.video.created_time);
+        }
+
+        if (res.video) {
+          emitter.emit('updateVideoId', res.video.id);
         }
 
         if (res.comments && res.comments.data) {
@@ -118,7 +122,7 @@ exports.stopEmitter = (emitter) => {
 
 exports.fetchComments = (videoId, pageId, emitter) => {
   console.log('fetching comments', videoId, pageId);
-  this.fetchExistingComments(videoId, pageId, emitter);
+  this.fetchExistingComments(videoId, pageId, null, null, emitter);
   const timerId = this.subscribeLatestComments(videoId, pageId, emitter);  
 
   emitter._stop = function() {
